@@ -29,7 +29,7 @@ npm install
 npx playwright install
 ```
 
-### Running Tests
+### 3. Running Tests
 
 #### Run all tests
 
@@ -43,12 +43,14 @@ npm run test
 
 Add `.only` to the specific test you want to run in isolation in `all.test.ts` and then run the same command:
 
+or use Playwright command:
+
 ```bash
-npm run test
+npx playwright test <<path>>
 ```
 
 
-### Your Task
+### 4. Your Tasks
 
 1. Implement a login test and capture the storage state so the remaining tests run as a logged in user
     - In `login.test.ts`, create a test that signs into Wikipedia
@@ -59,25 +61,12 @@ npm run test
 3. Complete the Wikipedia home page actions test
     - In `wikipediaHomepageActions.ts`, finish the existing test so that it correctly implements the test case in the file
  
-### Loom Video
+### 5. Results
+
+1.  login.tests  ✅
+2.  searchWikipedia ❌ Latest update is not Worstbull
+3.  wiipediaHomepageActions ✅
+
+
+### 6. Loom Video
 https://www.loom.com/share/1803d2ff882646f4bc6188e48ed0024e?sid=4712dcae-bc09-4220-b7d7-6f109031fbb2
-
-### Project Structure
-
-```plaintext
-├── README.md
-├── package.json
-├── package-lock.json
-├── playwright.config.ts
-├── .env
-└── src
-    └── lib
-        ├── all.test.ts
-        ├── login.test.ts
-        ├── tests
-        │   ├── searchWikipedia.ts
-        │   └── wikipediaHomepageActions.ts
-    └── auth
-        └── login.json
-```
-
