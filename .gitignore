@@ -1,0 +1,33 @@
+# Node modules
+/node_modules/
+
+# Playwright artifacts
+/.playwright/
+
+# TypeScript build output
+/dist/
+/out/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Test reports
+/test-results/
+/playwright-report/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE & Editor files
+.vscode/
+
+
+# OS generated files
+.DS_Store
+
+# npm debug log
+npm-debug.log*
+
+
