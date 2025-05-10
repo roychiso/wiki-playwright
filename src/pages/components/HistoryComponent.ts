@@ -12,10 +12,14 @@ export class HistoryComponent {
 
     async isLatestEditBy(name: string): Promise<boolean> {
         const element = await this.latestEdit.innerText();
-    
         return element.includes(name);
     }
 
 
+    async getLatestEditor(): Promise<string | null> {
+        await this.latestEdit.waitFor();
+        const latestEdit = await this.latestEdit.innerText();
+        return latestEdit;
+    }
 
 }

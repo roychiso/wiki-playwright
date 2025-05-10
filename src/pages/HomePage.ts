@@ -32,6 +32,7 @@ export class HomePage {
     }
 
     async selectArtifialIntelligenceLink() {
+        await this.artificialIntelligenceLink.waitFor()
         await this.artificialIntelligenceLink.click();
     }
 
@@ -52,6 +53,7 @@ export class HomePage {
     }
 
     async getAmountOfArticles(): Promise<number> {
+        await this.englishArticlesSection.waitFor();
         const result = this.englishArticlesSection.first().innerText();
         const output = parseInt((await result).replace(/,/g, ''));
 

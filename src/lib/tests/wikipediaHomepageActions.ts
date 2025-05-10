@@ -1,5 +1,6 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { HomePage } from '../../pages/HomePage';
+import { AssertUtils } from '../tests/assertUtils';
 
 /**
  * This test was generated using Ranger's test recording tool. The test is supposed to:
@@ -13,30 +14,31 @@ import { HomePage } from '../../pages/HomePage';
  *
  * Good luck!
  */
-export async function run(page: Page, params: {}) {
-    /** STEP 1. Navigate to Wikipedia's homepage */
+export async function run(page: Page, params: Record<string, unknown> = {}) {
     const baseURL = 'https://en.wikipedia.org/wiki/Main_Page';
-    const homePage: HomePage = new HomePage(page);
+    const homePage = new HomePage(page);
+
+    // STEP 1: Navigate to Wikipedia's homepage
     await homePage.goto(baseURL);
-    expect(page.url()).toBe(baseURL);
-    /** STEP 2. Assert there are less than 7,000,000 articles in English*/
+    AssertUtils.assertEqual(page.url(), baseURL, 'URL mismatch after navigating to Wikipedia homepage');
+
+    // STEP 2: Assert there are less than 7,000,000 articles in English
     const articlesCount = await homePage.getAmountOfArticles();
-    expect(articlesCount).toBeLessThan(7000000);
-    
-    /** STEP 3. Assert the page's text gets smaller when the 'Small' text size option is selected */
+    AssertUtils.assertLessThan(articlesCount, 7_000_000, 'Unexpected number of English Wikipedia articles');
+
+    // STEP 3: Assert text gets smaller with "Small" font option
     const titleStandardSize = await homePage.getTitleFontSize();
     await homePage.selectSmallFontText();
     const titleSmallSize = await homePage.getTitleFontSize();
-    console.log(`Title font size before: ${titleStandardSize}, after: ${titleSmallSize}`);
-    expect(titleSmallSize).toBeLessThan(titleStandardSize);
-    
-    /** STEP 4: Click the 'Large' text size option to change the display size */
+    AssertUtils.assertLessThan(titleSmallSize, titleStandardSize, 'Font size did not decrease with "Small" setting');
+
+    // STEP 4: Select "Large" font option and validate
     await homePage.selectLargeFontText();
     const titleLargeSize = await homePage.getTitleFontSize();
-    expect(titleLargeSize).toBeGreaterThan(titleStandardSize);
+    AssertUtils.assertGreaterThan(titleLargeSize, titleStandardSize, 'Font size did not increase with "Large" setting');
 
-    /** STEP 5: Click the 'Standard' text size option in the appearance settings */
+    // STEP 5: Return to "Standard" font option
     await homePage.selectStandardFontText();
     const titleStandardSizeAfter = await homePage.getTitleFontSize();
-    expect (titleStandardSizeAfter).toBe(titleStandardSize);
+    AssertUtils.assertEqual(titleStandardSizeAfter, titleStandardSize, 'Font size did not return to standard after reset');
 }

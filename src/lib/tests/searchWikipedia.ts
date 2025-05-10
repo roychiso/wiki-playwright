@@ -1,6 +1,7 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { HomePage } from '../../pages/HomePage';
 import { SearchPage } from '../../pages/SearchPage';
+import { AssertUtils } from '../tests/assertUtils';
 
 /**
  * This test was generated using Ranger's test recording tool. The test is supposed to:
@@ -18,25 +19,39 @@ import { SearchPage } from '../../pages/SearchPage';
  *
  * Good luck!
  */
-export async function run(page: Page, params: {}) {
-    /** STEP 1. Navigate to Wikipedia */
-    const baseURL = 'https://www.wikipedia.org/';
-    const homePage: HomePage = new HomePage(page);
-    await homePage.goto(baseURL);
-    expect(page.url()).toBe(baseURL);
 
-    /** STEP 2: Go to the "Artificial intelligence" page */
+
+
+export async function run(page: Page, params: Record<string, unknown> = {}) {
+    const baseURL = 'https://www.wikipedia.org/';
+    const expectedEditor = 'Worstbull';
+
+    // STEP 1: Navigate to Wikipedia
+    const homePage = new HomePage(page);
+    await homePage.goto(baseURL);
+    AssertUtils.assertEqual(page.url(), baseURL, 'URL mismatch after navigating to homepage');
+
+    // STEP 2: Go to the "Artificial intelligence" page
     await homePage.fillSearchCriteria('art');
     await homePage.selectArtifialIntelligenceLink();
-    expect(page.url()).toContain('Artificial_intelligence');
+    const aiUrl = page.url();
+    if (!aiUrl.includes('Artificial_intelligence')) {
+        throw new Error(`Expected URL to contain 'Artificial_intelligence', but got '${aiUrl}'`);
+    }
 
-    /** STEP 3: Click "View history" */
-    const searchPage: SearchPage = new SearchPage(page);
+    // STEP 3: Click "View history"
+    const searchPage = new SearchPage(page);
     await searchPage.selectViewHistory();
-    expect(page.url()).toContain('action=history');
+    const historyUrl = page.url();
+    if (!historyUrl.includes('action=history')) {
+        throw new Error(`Expected URL to contain 'action=history', but got '${historyUrl}'`);
+    }
 
-    /** STEP 4: Assert that the latest edit was made by the user "Worstbull" */
-    const isLatest = await searchPage.historySection.isLatestEditBy('Worstbull');
-    console.log(`Checking if latest edit was by 'Worstbull':`, isLatest);
-    expect(isLatest).toBeTruthy();
+    // STEP 4: Assert that the latest edit was made by the user "Worstbull"
+    const latestEditor = await searchPage.historySection.getLatestEditor();
+    if (!latestEditor) {
+        throw new Error(`No latest editor found. Expected '${expectedEditor}' but got null/undefined.`);
+    }
+
+    AssertUtils.assertEqual(latestEditor, expectedEditor, 'Mismatch in latest editor');
 }

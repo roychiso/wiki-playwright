@@ -13,6 +13,7 @@ export class SearchPage {
     }
 
     async selectViewHistory() {
+        await this.viewHistoryLink.waitFor();
         await this.viewHistoryLink.click();
     }
 }

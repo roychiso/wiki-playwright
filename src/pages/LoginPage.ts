@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 
 export class LoginPage {
     readonly page: Page;
@@ -16,7 +16,7 @@ export class LoginPage {
         this.loginButton = page.getByRole('button', { name: 'Log in' });
         this.error = page.getByText('Incorrect username or password entered');
     }
-    
+
     async goto() {
         const loginURL = process.env.LOGIN_URL;
         if (!loginURL) {
@@ -24,6 +24,8 @@ export class LoginPage {
         }
         await this.page.goto(`${loginURL}`);
         await this.englishLink.click();
+        await expect(this.page).toHaveURL(/.*uselang=en/);
+
     }
 
     async fillEmail(email: string) {
