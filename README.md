@@ -5,6 +5,11 @@ This project is an end-to-end test automation suite built with [Playwright](http
 
 ## 🛠️ Getting Started
 
+### Requirements
+
+-   Node.js v22+
+-   npm
+
 ### 1. Clone the repository
 
 ```bash
@@ -13,13 +18,6 @@ cd wiki-playwright
 ```
 
 ### 2. Setup
-
-### Requirements
-
--   Node.js v22+
--   npm
-
-### Quick Start
 
 #### Install dependencies
 ```bash
@@ -62,6 +60,7 @@ npm run test
     - In `wikipediaHomepageActions.ts`, finish the existing test so that it correctly implements the test case in the file
  
 ### Loom Video
+https://www.loom.com/share/1803d2ff882646f4bc6188e48ed0024e?sid=4712dcae-bc09-4220-b7d7-6f109031fbb2
 
 ### Project Structure
 
